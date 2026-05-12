@@ -56,9 +56,13 @@ def get_dashboard_view(page: ft.Page):
 
     no_data_text = ft.Text("", size=18, color="#4d4a41", italic=True)
 
+    dlg_modal = None
+
     def close_modal(e):
-        dlg_modal.open = False
-        page.update()
+        try:
+            page.pop_dialog()
+        except:
+            pass
 
     def search_without_curp(e):
         escuela_val = escuela_field.content.value or ""
@@ -100,113 +104,24 @@ def get_dashboard_view(page: ft.Page):
                     )
                 )
             no_data_text.visible = len(alumnos_data) == 0
-            dlg_modal.open = False
-            page.update()
+            page.pop_dialog()
         except Exception as ex:
             print("Error searching alumnos:", ex)
 
-    dlg_escuela = ft.AlertDialog(
-        modal=True,
-        title=ft.Container(
-            padding=ft.Padding.only(bottom=5),
-            content=ft.Text(
-                "Agregar Escuela",
-                size=22,
-                italic=True,
-                weight=ft.FontWeight.W_900,
-                color="#5c000b",
-                text_align=ft.TextAlign.CENTER
-            )
-        ),
-        content=ft.Container(
-            width=480,
-            padding=ft.Padding.only(left=10, right=10, top=5, bottom=10),
-            content=ft.Column(
-                spacing=12,
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                controls=[
-                    ft.Row(
-                        alignment=ft.MainAxisAlignment.START,
-                        spacing=10,
-                        controls=[
-                            ft.Container(
-                                width=90,
-                                content=ft.Text("CST", size=15, italic=True, weight=ft.FontWeight.W_700, color="#5c000b")
-                            ),
-                            MyTextFieldSearch(width=200),
-                            ft.ElevatedButton(
-                                "Guardar",
-                                style=ft.ButtonStyle(
-                                    bgcolor="#5c000b",
-                                    color="#dcdad0",
-                                    shape=ft.RoundedRectangleBorder(radius=15),
-                                    padding=ft.Padding.symmetric(horizontal=25, vertical=10)
-                                ),
-                                on_click=lambda e: None
-                            )
-                        ]
-                    ),
-                    ft.Row(
-                        alignment=ft.MainAxisAlignment.START,
-                        spacing=10,
-                        controls=[
-                            ft.Container(
-                                width=90,
-                                content=ft.Text("Nombre", size=15, italic=True, weight=ft.FontWeight.W_700, color="#5c000b")
-                            ),
-                            MyTextFieldSearch(width=320)
-                        ]
-                    ),
-                    ft.Row(
-                        alignment=ft.MainAxisAlignment.START,
-                        spacing=10,
-                        controls=[
-                            ft.Container(
-                                width=90,
-                                content=ft.Text("Localidad", size=15, italic=True, weight=ft.FontWeight.W_700, color="#5c000b")
-                            ),
-                            MyTextFieldSearch(width=200),
-                            ft.Container(
-                                width=70,
-                                content=ft.Text("Zona", size=15, italic=True, weight=ft.FontWeight.W_700, color="#5c000b")
-                            ),
-                            MyTextFieldSearch(width=130)
-                        ]
-                    ),
-                    ft.Container(height=5),
-                    ft.ElevatedButton(
-                        "Cerrar",
-                        style=ft.ButtonStyle(
-                            bgcolor="#7b7971",
-                            color="#dcdad0",
-                            shape=ft.RoundedRectangleBorder(radius=15),
-                            padding=ft.Padding.symmetric(horizontal=30, vertical=10)
-                        ),
-                        on_click=lambda e: page.pop_dialog()
-                    )
-                ]
-            )
-        ),
-        bgcolor="#cdc2a5",
-        shape=ft.RoundedRectangleBorder(radius=25)
-    )
-
-    def open_escuela_modal(e):
-        page.show_dialog(dlg_escuela)
-
     dlg_modal = ft.AlertDialog(
         modal=True,
-        title=ft.Container(
-            padding=ft.Padding.only(bottom=10),
-            content=ft.Text(
+        title=ft.Row([
+            ft.Text(
                 "Buscar sin CURP",
-                size=24,
+                size=18,
                 italic=True,
                 weight=ft.FontWeight.W_900,
                 color="#5c000b",
-                text_align=ft.TextAlign.CENTER
-            )
-        ),
+                text_align=ft.TextAlign.CENTER,
+                expand=True
+            ),
+            ft.IconButton(icon="close", icon_size=26, on_click=lambda e: page.pop_dialog(), icon_color="#5c000b")
+        ]),
         content=ft.Container(
             width=500,
             padding=ft.Padding.only(left=10, right=10, top=5, bottom=15),
@@ -222,14 +137,7 @@ def get_dashboard_view(page: ft.Page):
                                 width=100,
                                 content=ft.Text("Escuela", size=16, italic=True, weight=ft.FontWeight.W_700, color="#5c000b")
                             ),
-                            escuela_field,
-                            ft.IconButton(
-                                icon=ft.Icons.ADD,
-                                icon_color="#5c000b",
-                                icon_size=24,
-                                on_click=open_escuela_modal,
-                                tooltip="Agregar escuela"
-                            )
+                            escuela_field
                         ]
                     ),
                     ft.Row(
@@ -346,7 +254,6 @@ def get_dashboard_view(page: ft.Page):
         content=ft.Column(
             spacing=0,
             controls=[
-                # Top Bar
                 ft.Container(
                     height=90,
                     padding=ft.Padding.symmetric(horizontal=30),
@@ -363,7 +270,6 @@ def get_dashboard_view(page: ft.Page):
                         ]
                     )
                 ),
-                # Center Content
                 ft.Container(
                     expand=True,
                     padding=ft.Padding.symmetric(horizontal=40, vertical=20),
@@ -371,7 +277,6 @@ def get_dashboard_view(page: ft.Page):
                         controls=[
                             ft.Text("Consultar Alumnos", size=28, italic=True, weight=ft.FontWeight.W_900, color="#5c000b"),
                             ft.Container(height=10),
-                            # Search bar + Sin CURP button
                             ft.Row(
                                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                                 controls=[
@@ -406,7 +311,6 @@ def get_dashboard_view(page: ft.Page):
                                 ]
                             ),
                             ft.Container(height=20),
-                            # Data table
                             ft.Container(
                                 expand=True,
                                 bgcolor="#cdc2a5",
@@ -421,7 +325,6 @@ def get_dashboard_view(page: ft.Page):
                                     ]
                                 )
                             ),
-                            # Volver button
                             ft.ElevatedButton(
                                 "Volver al Menú",
                                 style=ft.ButtonStyle(
@@ -435,7 +338,6 @@ def get_dashboard_view(page: ft.Page):
                         ]
                     )
                 ),
-                # Bottom Bar
                 ft.Container(
                     height=70,
                     padding=ft.Padding.only(right=30, top=5, bottom=5),

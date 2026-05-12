@@ -4,13 +4,12 @@ from core.database import get_supabase_client
 def get_agregar_view(page: ft.Page):
     page.padding = 0
     page.update()
-    
+
     supabase = get_supabase_client()
 
-    # Estilos compartidos
     label_style_yellow = dict(size=22, italic=True, weight=ft.FontWeight.W_800, color="#f1ac20")
     label_style_dark = dict(size=22, italic=True, weight=ft.FontWeight.W_800, color="#4d4a41")
-    
+
     def MyTextField(width):
         return ft.Container(
             bgcolor="#a09d94",
@@ -26,82 +25,66 @@ def get_agregar_view(page: ft.Page):
                 expand=True
             )
         )
-        
+
     cst_field = MyTextField(width=200)
     nombre_esc_field = MyTextField(width=450)
     localidad_field = MyTextField(width=200)
     zona_field = MyTextField(width=150)
 
-    def close_dlg(e):
-        if hasattr(page, 'close'):
-            page.close(dlg_modal)
-        else:
-            dlg_modal.open = False
-            page.update()
-
-    def guardar_escuela(e):
-        # Preparación para interactuar con la DB
-        # Ej: 
-        # supabase.table("escuelas").insert({"cst": cst_field.content.value, "nombre": nombre_esc_field.content.value, ... }).execute()
-        # Aquí se recargaría el Dropdown
-        print("Simulando guardado de escuela en BD...")
-        close_dlg(e)
-
     dlg_modal = ft.AlertDialog(
         modal=True,
         title=ft.Row([
-            ft.Text("Escuela no encontrada", size=30, italic=True, weight=ft.FontWeight.W_900, color="#731114", text_align=ft.TextAlign.CENTER, expand=True),
-            ft.IconButton(icon="close", icon_size=30, on_click=close_dlg, icon_color=ft.Colors.BLACK)
+            ft.Text("Agregar Escuela", size=30, italic=True, weight=ft.FontWeight.W_900, color="#5c000b", text_align=ft.TextAlign.CENTER, expand=True),
+            ft.IconButton(icon="close", icon_size=30, on_click=lambda e: page.pop_dialog(), icon_color="#5c000b")
         ]),
         content=ft.Container(
             width=650,
             height=250,
             padding=5,
             content=ft.Column([
-                # Row 1: CST, Guardar
                 ft.Row([
                     ft.Container(width=100, content=ft.Text("CST", size=18, italic=True, weight=ft.FontWeight.W_800, color="#4d4a41", text_align=ft.TextAlign.RIGHT)),
                     cst_field,
                     ft.Container(expand=True),
                     ft.ElevatedButton(
-                        "Guardar", 
-                        style=ft.ButtonStyle(bgcolor="#f0ad32", color=ft.Colors.WHITE, shape=ft.RoundedRectangleBorder(radius=15), padding=ft.Padding.symmetric(horizontal=30, vertical=15)),
-                        on_click=guardar_escuela
+                        "Guardar",
+                        style=ft.ButtonStyle(bgcolor="#5c000b", color="#dcdad0", shape=ft.RoundedRectangleBorder(radius=15), padding=ft.Padding.symmetric(horizontal=30, vertical=15)),
+                        on_click=lambda e: print("Guardar escuela")
                     )
                 ], alignment=ft.MainAxisAlignment.START),
-                
                 ft.Container(height=10),
-                
-                # Row 2: Nombre
                 ft.Row([
                     ft.Container(width=100, content=ft.Text("Nombre", size=18, italic=True, weight=ft.FontWeight.W_800, color="#4d4a41", text_align=ft.TextAlign.RIGHT)),
                     nombre_esc_field
                 ]),
-                
                 ft.Container(height=10),
-                
-                # Row 3: Localidad - Zona
                 ft.Row([
                     ft.Container(width=100, content=ft.Text("Localidad", size=18, italic=True, weight=ft.FontWeight.W_800, color="#4d4a41", text_align=ft.TextAlign.RIGHT)),
                     localidad_field,
                     ft.Text("Zona", size=18, italic=True, weight=ft.FontWeight.W_800, color="#4d4a41"),
                     zona_field
-                ], alignment=ft.MainAxisAlignment.START)
+                ], alignment=ft.MainAxisAlignment.START),
+                ft.Container(height=10),
+                ft.Row(
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    spacing=20,
+                    controls=[
+                        ft.ElevatedButton(
+                            "Cerrar",
+                            style=ft.ButtonStyle(bgcolor="#7b7971", color="#dcdad0", shape=ft.RoundedRectangleBorder(radius=15), padding=ft.Padding.symmetric(horizontal=30, vertical=12)),
+                            on_click=lambda e: page.pop_dialog()
+                        )
+                    ]
+                )
             ])
         ),
-        bgcolor="#ccc8b9", 
+        bgcolor="#cdc2a5",
         shape=ft.RoundedRectangleBorder(radius=30)
     )
 
     def open_dlg(e):
-        if hasattr(page, 'open'):
-            page.open(dlg_modal)
-        else:
-            page.dialog = dlg_modal
-            dlg_modal.open = True
-            page.update()
+        page.show_dialog(dlg_modal)
 
-    # Controles
     btn_buscar = ft.ElevatedButton(
         content=ft.Text("Buscar", size=22, italic=True, weight=ft.FontWeight.W_900, color="#f0ece1"),
         style=ft.ButtonStyle(
@@ -112,13 +95,23 @@ def get_agregar_view(page: ft.Page):
         on_click=lambda e: print("Buscar click")
     )
 
+    btn_agregar_escuela = ft.ElevatedButton(
+        "Agregar Escuela",
+        style=ft.ButtonStyle(
+            bgcolor="#5c000b",
+            color="#dcdad0",
+            shape=ft.RoundedRectangleBorder(radius=20),
+            padding=ft.Padding.symmetric(horizontal=20, vertical=12)
+        ),
+        on_click=open_dlg
+    )
+
     return ft.Container(
         expand=True,
         bgcolor="#d1ccbc",
         content=ft.Column(
             spacing=0,
             controls=[
-                # Top Bar
                 ft.Container(
                     height=90,
                     padding=ft.Padding.symmetric(horizontal=30),
@@ -135,14 +128,12 @@ def get_agregar_view(page: ft.Page):
                         ]
                     )
                 ),
-                # Center Content
                 ft.Container(
                     expand=True,
                     padding=ft.Padding.symmetric(horizontal=50, vertical=20),
                     content=ft.Column(
                         alignment=ft.MainAxisAlignment.SPACE_AROUND,
                         controls=[
-                            # Fila 1: CURP
                             ft.Row(
                                 alignment=ft.MainAxisAlignment.START,
                                 spacing=20,
@@ -152,7 +143,6 @@ def get_agregar_view(page: ft.Page):
                                     btn_buscar
                                 ]
                             ),
-                            # Fila 2: Escuela
                             ft.Row(
                                 alignment=ft.MainAxisAlignment.START,
                                 spacing=20,
@@ -161,32 +151,22 @@ def get_agregar_view(page: ft.Page):
                                     ft.Container(
                                         bgcolor="#a09d94",
                                         border_radius=20,
-                                        width=500,
+                                        width=350,
                                         height=45,
                                         padding=ft.Padding.only(left=15, right=15),
                                         content=ft.Dropdown(
                                             border=ft.InputBorder.NONE,
                                             color=ft.Colors.BLACK87,
                                             options=[
-                                                # Aqui deben cargar las escuelas desde supabase
-                
-                                                ft.dropdown.Option("Agregar una escuela nueva..."),
+                                                ft.dropdown.Option("Seleccionar escuela..."),
                                             ],
                                         )
                                     ),
-                                    ft.IconButton(
-                                        icon="add_circle",
-                                        icon_color="#f0ad32",
-                                        icon_size=35,
-                                        
-                                        on_click=open_dlg,
-                                        tooltip="Agregar nueva escuela"
-                                    )
+                                    btn_agregar_escuela
                                 ]
                             ),
-                            # Fila 3: Contenedor Grupo, Grado, Ciclo
                             ft.Container(
-                                bgcolor="#cdc2a5", # Un tono ligeramente distinto
+                                bgcolor="#cdc2a5",
                                 border_radius=30,
                                 padding=ft.Padding.symmetric(vertical=15, horizontal=30),
                                 content=ft.Row(
@@ -198,7 +178,6 @@ def get_agregar_view(page: ft.Page):
                                     ]
                                 )
                             ),
-                            # Fila 4: Promedio, Folio
                             ft.Row(
                                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                                 controls=[
@@ -218,7 +197,6 @@ def get_agregar_view(page: ft.Page):
                                     )
                                 ]
                             ),
-                            # Fila 5: Libro, Foja
                             ft.Container(
                                 bgcolor="#cdc2a5",
                                 border_radius=30,
@@ -231,7 +209,6 @@ def get_agregar_view(page: ft.Page):
                                     ]
                                 )
                             ),
-                            # Volver button
                             ft.ElevatedButton(
                                 "Volver al Menú",
                                 style=ft.ButtonStyle(
@@ -245,7 +222,6 @@ def get_agregar_view(page: ft.Page):
                         ]
                     )
                 ),
-                # Bottom Bar
                 ft.Container(
                     height=70,
                     padding=ft.Padding.only(right=30, top=5, bottom=5),
