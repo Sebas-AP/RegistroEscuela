@@ -47,7 +47,7 @@ def get_register_view(page: ft.Page):
             show_snack("Sin conexión a BD", ft.Colors.ORANGE_500)
             return
         try:
-            data = {"name": txt_name.value, "nameUsu": txt_usu.value, "pass": txt_pass.value, "role": 1}
+            data = {"name": txt_name.value, "name_usu": txt_usu.value, "pass": txt_pass.value, "role": 1}
             supabase.table("usuarios").insert(data).execute()
             show_snack("Registrado exitosamente", ft.Colors.GREEN_500)
             page.go("/login")
@@ -63,7 +63,7 @@ def get_register_view(page: ft.Page):
                 # Top Bar
                 ft.Container(
                     height=90,
-                    padding=ft.padding.symmetric(horizontal=30),
+                    padding=ft.Padding.symmetric(horizontal=30),
                     gradient=ft.LinearGradient(
                         begin=ft.Alignment.CENTER_LEFT,
                         end=ft.Alignment.CENTER_RIGHT,
@@ -100,7 +100,7 @@ def get_register_view(page: ft.Page):
                                         border_radius=30,
                                         width=450,
                                         height=55,
-                                        padding=ft.padding.only(left=20, right=10, top=5),
+                                        padding=ft.Padding.only(left=20, right=10, top=5),
                                         content=ft.Row([txt_name], expand=True)
                                     )
                                 ]
@@ -117,7 +117,7 @@ def get_register_view(page: ft.Page):
                                         border_radius=30,
                                         width=450,
                                         height=55,
-                                        padding=ft.padding.only(left=20, right=10, top=5),
+                                        padding=ft.Padding.only(left=20, right=10, top=5),
                                         content=ft.Row([txt_usu], expand=True)
                                     )
                                 ]
@@ -134,7 +134,7 @@ def get_register_view(page: ft.Page):
                                         border_radius=30,
                                         width=450,
                                         height=55,
-                                        padding=ft.padding.only(left=20, right=10, top=5),
+                                        padding=ft.Padding.only(left=20, right=10, top=5),
                                         content=ft.Row([txt_pass], expand=True)
                                     )
                                 ]
@@ -150,7 +150,7 @@ def get_register_view(page: ft.Page):
                                         style=ft.ButtonStyle(
                                             bgcolor="#eead2e",
                                             shape=ft.RoundedRectangleBorder(radius=30),
-                                            padding=ft.padding.symmetric(horizontal=40, vertical=15),
+                                            padding=ft.Padding.symmetric(horizontal=40, vertical=15),
                                         ),
                                         on_click=lambda e: page.go("/login")
                                     ),
@@ -159,7 +159,7 @@ def get_register_view(page: ft.Page):
                                         style=ft.ButtonStyle(
                                             bgcolor="#eead2e",
                                             shape=ft.RoundedRectangleBorder(radius=30),
-                                            padding=ft.padding.symmetric(horizontal=40, vertical=15),
+                                            padding=ft.Padding.symmetric(horizontal=40, vertical=15),
                                         ),
                                         on_click=on_register_click
                                     )
@@ -171,7 +171,7 @@ def get_register_view(page: ft.Page):
                 # Bottom Bar
                 ft.Container(
                     height=70,
-                    padding=ft.padding.only(right=30, top=5, bottom=5),
+                    padding=ft.Padding.only(right=30, top=5, bottom=5),
                     bgcolor="#9e9c93",
                     content=ft.Row(
                         alignment=ft.MainAxisAlignment.END,

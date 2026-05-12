@@ -40,7 +40,7 @@ def get_login_view(page: ft.Page):
             show_snack("Sin conexión a BD", ft.Colors.ORANGE_500)
             return
         try:
-            res = supabase.table("usuarios").select("*").eq("nameUsu", txt_usu.value).eq("pass", txt_pass.value).execute()
+            res = supabase.table("usuarios").select("*").eq("name_usu", txt_usu.value).eq("pass", txt_pass.value).execute()
             if res.data and len(res.data) > 0:
                 show_snack(f"¡Bienvenido {res.data[0].get('name')}!", ft.Colors.GREEN_500)
                 # Redirect to dashboard upon successful login
@@ -59,7 +59,7 @@ def get_login_view(page: ft.Page):
                 # Top Bar
                 ft.Container(
                     height=90,
-                    padding=ft.padding.symmetric(horizontal=30),
+                    padding=ft.Padding(left=30, top=0, right=30, bottom=0),
                     gradient=ft.LinearGradient(
                         begin=ft.Alignment.CENTER_LEFT,
                         end=ft.Alignment.CENTER_RIGHT,
@@ -96,7 +96,7 @@ def get_login_view(page: ft.Page):
                                         border_radius=30,
                                         width=450,
                                         height=60,
-                                        padding=ft.padding.only(left=20, right=10, top=5),
+                                        padding=ft.Padding.only(left=20, right=10, top=5),
                                         content=ft.Row([txt_usu], expand=True)
                                     )
                                 ]
@@ -113,7 +113,7 @@ def get_login_view(page: ft.Page):
                                         border_radius=30,
                                         width=450,
                                         height=60,
-                                        padding=ft.padding.only(left=20, right=10, top=5),
+                                        padding=ft.Padding.only(left=20, right=10, top=5),
                                         content=ft.Row([txt_pass], expand=True)
                                     )
                                 ]
@@ -129,7 +129,7 @@ def get_login_view(page: ft.Page):
                                         style=ft.ButtonStyle(
                                             bgcolor="#eead2e",
                                             shape=ft.RoundedRectangleBorder(radius=30),
-                                            padding=ft.padding.symmetric(horizontal=40, vertical=20),
+                                            padding=ft.Padding.symmetric(horizontal=40, vertical=20),
                                         ),
                                         on_click=lambda e: page.go("/register")
                                     ),
@@ -138,7 +138,7 @@ def get_login_view(page: ft.Page):
                                         style=ft.ButtonStyle(
                                             bgcolor="#eead2e",
                                             shape=ft.RoundedRectangleBorder(radius=30),
-                                            padding=ft.padding.symmetric(horizontal=50, vertical=20),
+                                            padding=ft.Padding.symmetric(horizontal=50, vertical=20),
                                         ),
                                         on_click=on_login_click
                                     )
@@ -150,7 +150,7 @@ def get_login_view(page: ft.Page):
                 # Bottom Bar
                 ft.Container(
                     height=70,
-                    padding=ft.padding.only(right=30, top=5, bottom=5),
+                    padding=ft.Padding.only(right=30, top=5, bottom=5),
                     bgcolor="#9e9c93",
                     content=ft.Row(
                         alignment=ft.MainAxisAlignment.END,

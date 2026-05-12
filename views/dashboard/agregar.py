@@ -17,7 +17,7 @@ def get_agregar_view(page: ft.Page):
             border_radius=20,
             width=width,
             height=45,
-            padding=ft.padding.only(left=15, right=15),
+            padding=ft.Padding.only(left=15, right=15),
             content=ft.TextField(
                 border=ft.InputBorder.NONE,
                 bgcolor=ft.Colors.TRANSPARENT,
@@ -65,7 +65,7 @@ def get_agregar_view(page: ft.Page):
                     ft.Container(expand=True),
                     ft.ElevatedButton(
                         "Guardar", 
-                        style=ft.ButtonStyle(bgcolor="#f0ad32", color=ft.Colors.WHITE, shape=ft.RoundedRectangleBorder(radius=15), padding=ft.padding.symmetric(horizontal=30, vertical=15)),
+                        style=ft.ButtonStyle(bgcolor="#f0ad32", color=ft.Colors.WHITE, shape=ft.RoundedRectangleBorder(radius=15), padding=ft.Padding.symmetric(horizontal=30, vertical=15)),
                         on_click=guardar_escuela
                     )
                 ], alignment=ft.MainAxisAlignment.START),
@@ -107,7 +107,7 @@ def get_agregar_view(page: ft.Page):
         style=ft.ButtonStyle(
             bgcolor="#eead2e",
             shape=ft.RoundedRectangleBorder(radius=20),
-            padding=ft.padding.symmetric(horizontal=40, vertical=10),
+            padding=ft.Padding.symmetric(horizontal=40, vertical=10),
         ),
         on_click=lambda e: print("Buscar click")
     )
@@ -121,7 +121,7 @@ def get_agregar_view(page: ft.Page):
                 # Top Bar
                 ft.Container(
                     height=90,
-                    padding=ft.padding.symmetric(horizontal=30),
+                    padding=ft.Padding.symmetric(horizontal=30),
                     gradient=ft.LinearGradient(
                         begin=ft.Alignment.CENTER_LEFT,
                         end=ft.Alignment.CENTER_RIGHT,
@@ -138,7 +138,7 @@ def get_agregar_view(page: ft.Page):
                 # Center Content
                 ft.Container(
                     expand=True,
-                    padding=ft.padding.symmetric(horizontal=50, vertical=20),
+                    padding=ft.Padding.symmetric(horizontal=50, vertical=20),
                     content=ft.Column(
                         alignment=ft.MainAxisAlignment.SPACE_AROUND,
                         controls=[
@@ -163,13 +163,14 @@ def get_agregar_view(page: ft.Page):
                                         border_radius=20,
                                         width=500,
                                         height=45,
-                                        padding=ft.padding.only(left=15, right=15),
+                                        padding=ft.Padding.only(left=15, right=15),
                                         content=ft.Dropdown(
                                             border=ft.InputBorder.NONE,
                                             color=ft.Colors.BLACK87,
                                             options=[
                                                 # Aqui deben cargar las escuelas desde supabase
-                                                ft.dropdown.Option("Seleccione una opción..."),
+                
+                                                ft.dropdown.Option("Agregar una escuela nueva..."),
                                             ],
                                         )
                                     ),
@@ -177,6 +178,7 @@ def get_agregar_view(page: ft.Page):
                                         icon="add_circle",
                                         icon_color="#f0ad32",
                                         icon_size=35,
+                                        
                                         on_click=open_dlg,
                                         tooltip="Agregar nueva escuela"
                                     )
@@ -186,7 +188,7 @@ def get_agregar_view(page: ft.Page):
                             ft.Container(
                                 bgcolor="#cdc2a5", # Un tono ligeramente distinto
                                 border_radius=30,
-                                padding=ft.padding.symmetric(vertical=15, horizontal=30),
+                                padding=ft.Padding.symmetric(vertical=15, horizontal=30),
                                 content=ft.Row(
                                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                                     controls=[
@@ -220,7 +222,7 @@ def get_agregar_view(page: ft.Page):
                             ft.Container(
                                 bgcolor="#cdc2a5",
                                 border_radius=30,
-                                padding=ft.padding.symmetric(vertical=15, horizontal=30),
+                                padding=ft.Padding.symmetric(vertical=15, horizontal=30),
                                 content=ft.Row(
                                     alignment=ft.MainAxisAlignment.SPACE_AROUND,
                                     controls=[
@@ -229,12 +231,16 @@ def get_agregar_view(page: ft.Page):
                                     ]
                                 )
                             ),
-                            # Botón volver al menu opcional (por usabilidad, aunque no está en la imagen)
-                            ft.Row(
-                                alignment=ft.MainAxisAlignment.CENTER,
-                                controls=[
-                                    ft.TextButton("Volver al Menú", on_click=lambda e: page.go("/menu"))
-                                ]
+                            # Volver button
+                            ft.ElevatedButton(
+                                "Volver al Menú",
+                                style=ft.ButtonStyle(
+                                    bgcolor="#5c000b",
+                                    color="#dcdad0",
+                                    shape=ft.RoundedRectangleBorder(radius=20),
+                                    padding=ft.Padding.symmetric(horizontal=20, vertical=12)
+                                ),
+                                on_click=lambda e: page.go("/menu")
                             )
                         ]
                     )
@@ -242,7 +248,7 @@ def get_agregar_view(page: ft.Page):
                 # Bottom Bar
                 ft.Container(
                     height=70,
-                    padding=ft.padding.only(right=30, top=5, bottom=5),
+                    padding=ft.Padding.only(right=30, top=5, bottom=5),
                     bgcolor="#9e9c93",
                     content=ft.Row(
                         alignment=ft.MainAxisAlignment.END,

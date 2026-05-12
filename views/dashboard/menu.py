@@ -19,7 +19,7 @@ def get_menu_view(page: ft.Page):
                 # Top Bar
                 ft.Container(
                     height=90,
-                    padding=ft.padding.symmetric(horizontal=30),
+                    padding=ft.Padding.symmetric(horizontal=30),
                     gradient=ft.LinearGradient(
                         begin=ft.Alignment.CENTER_LEFT,
                         end=ft.Alignment.CENTER_RIGHT,
@@ -69,7 +69,7 @@ def get_menu_view(page: ft.Page):
                 # Bottom Bar
                 ft.Container(
                     height=70,
-                    padding=ft.padding.only(right=30, top=5, bottom=5),
+                    padding=ft.Padding.only(right=30, top=5, bottom=5),
                     bgcolor="#9e9c93",
                     content=ft.Row(
                         alignment=ft.MainAxisAlignment.END,
